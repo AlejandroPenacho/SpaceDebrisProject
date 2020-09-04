@@ -8,5 +8,3 @@ end
 %hello
 %Hej/San
 %Hellooooossss
-
-% Another change
