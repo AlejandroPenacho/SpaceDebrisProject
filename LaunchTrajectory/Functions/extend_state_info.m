@@ -27,7 +27,7 @@ function stageStateArray = extend_state_info(stageStateArray, Parameter, iStage)
 
     stageStateArray(:,6) = (stageStateArray(1)+Parameter.Constant.earthRadius) ...
                           * stageStateArray(4);
-                      
+
     stageStateArray(:,7) = atan2(stageStateArray(:,3), stageStateArray(:,3));
     stageStateArray(:,8) = ones(nPoints, 1) * iStage;
 end

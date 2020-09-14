@@ -11,7 +11,7 @@ function [derivativeMass] = get_fuel_consumption(thrust, Parameter, iStage)
 %       - derivativeMass: derivative of the mass with respect to time, in
 %                         kg/s
 %
-    
+
     derivativeMass = -thrust/(Parameter.Constant.earthSLGravity * Parameter.Rocket.Stage(iStage).Isp);
 end
 

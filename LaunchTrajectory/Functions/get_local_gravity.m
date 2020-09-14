@@ -10,7 +10,7 @@ function [localGravity] = get_local_gravity(altitude, Parameter)
 %       - localGravity: local gravitational acceleration towards the Earth,
 %                       in m/s^2
 %
-    
+
     localGravity = Parameter.Constant.earthSLGravity * ...
                    ((Parameter.Constant.earthRadius)/(Parameter.Constant.earthRadius + altitude))^2;
 end
