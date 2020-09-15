@@ -1,0 +1,1 @@
+[Control] = parse_control_options("controlFile.txt");

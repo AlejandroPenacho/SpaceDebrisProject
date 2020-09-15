@@ -1,0 +1,23 @@
+# This is an example of a control file, a '#' indicates this is a comment, and will not be
+# parsed by the matlab function. Comments can be added at any position, and affect all the
+# characters after the '#'
+
+Name:			gravtityTurnStart
+Trigger condition:	altitude > 30 AND gamma < 85
+Control variable:	lateral_thrust
+Value:			20
+
+Name:			keepTerminalSpeed
+Trigger condition:	total_velocity < 1.01*terminal_speed AND total_velocity > 0.99*terminal_speed
+Control variable:	longitudinal_thrust
+Value:			drag
+
+Name:			accelerateToTerminalSpeed
+Trigger condition:	total_velocity < 0.99*terminal_speed
+Control variable:	longitudinal_thrust	
+Value:			max_thrust
+
+Name:			deccelarateToTerminalSpeed
+Trigger condition:	total_velocity > 0.99*terminal_speed
+Control variable:	longitudinal_speed
+Value:			0
