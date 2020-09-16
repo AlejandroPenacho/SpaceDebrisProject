@@ -3,13 +3,27 @@
 
 
 RocketData = extract_rocket_data("rocket1.txt");
+ControlStruct = struct("initialConditions", 0);
+ConstantStruct = struct("earthRadius", 6371000, ...
+                        "earthSLGravity", 9.81);
 
-Parameter = struct("Rocket", RocketData);
+Parameter(1:10) = struct("Rocket", RocketData, "Control", ControlStruct, "Constant", ConstantStruct);
 
-Parameter.Control.initialConditions = [0, 0, 0, 0, RocketData.initialMass];
+for iRocket = 1:10
+    Parameter(iRocket).Control.initialConditions = [0, pi/2 - 0.05 + 0.05* iRocket/10, 0, 0, RocketData.initialMass];
+end
 
-Parameter.Constant.earthRadius = 6371000;
-Parameter.Constant.earthSLGravity = 9.81;
 
-Results = integrate_trajectory(Parameter);
+for iRocket = 1:10
+    Results(iRocket) = integrate_trajectory(Parameter(iRocket));
+end
 
+
+figure
+hold on
+for iRocket = 1:10
+    plot(Results(iRocket).stateArray(:,3), Results(iRocket).stateArray(:,4))
+end
+hold off
+% daspect([1 1 1])
+grid minor
