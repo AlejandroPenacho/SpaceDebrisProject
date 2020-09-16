@@ -4,9 +4,8 @@ Initial mass(kg):
 Number of stages:
 2
 
-Stage:	Max. thrust(N):		Specific impulse(s):	Payload ratio:		Structural ratio:	Cross-section(m^2):	C_D:
+Stage:	Max. thrust(N):		Specific impulse(s):	Payload ratio:		Structural ratio:	Cross-section(m^2):     C_D:
 
-1	500000			130			0.3			0.09			7			0.4
+1       500000              130                     0.3                 0.09                7                       0.4
 
-2	200000			120			0.4			0.12			7			0.3
-
+2       200000              120                     0.4                 0.12                7                       0.3

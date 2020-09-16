@@ -9,14 +9,12 @@ function [derivativeStateArray] = get_state_derivative(t, state, Data)
     %        time
     %   - state: current state of the rocker, given as a vector with the
     %            following composition-
-    %                > Altitude of the rocket above SL
-    %                > Angle between the vector pointing from the center of
-    %                   the Earth to the launch site, and from the center
-    %                   of the Earth to the rocket, in radians
-    %                > Derivative of altitude with time, that is, vetical
-    %                   speed, in meters per second
-    %                > Derivative of the angle of the seconda element with
-    %                   respect to time, in radians per second
+    %                > Absolute velocity of the rocket with respect to gound
+    %                > Flight path angle, angle between the velocity vector
+    %                   of the rocket and the local horizon, in radians
+    %                > Horizontal distance between the rocket and the
+    %                   launch site, in meters
+    %                > Altitude of the rocket above SL, in meters
     %                > Total mass of the rocket, in kg
     %
     %
@@ -41,10 +39,10 @@ function [derivativeStateArray] = get_state_derivative(t, state, Data)
     % Each of the elements in the state array is extracted, so it is more
     % convenient to work with them
 
-    h = state(1);
-    theta = state(2);
-    hDot = state(3);
-    thetaDot = state(4);
+    velocity = state(1);
+    gamma = state(2);
+    x = state(3);
+    h = state(4);
     mass = state(5);
 
     % Thrust and drag are obtained from other functions, and the angle
@@ -52,35 +50,32 @@ function [derivativeStateArray] = get_state_derivative(t, state, Data)
     % angle between the local horizon and the trajectory of the rocket.
 
     thrust = get_thrust(t, state, iStage, Parameter);
-    drag = compute_drag(state, iStage, Parameter);
-    gamma = atan2(hDot, (rEarth + h)*thetaDot);
-
-    % At first, the speed of the rocket is zero, but it is pointing
-    % upwards, so this angle must be specified.
-
-    if hDot == 0 && thetaDot==0
-        gamma = pi/2;
-    end
+    drag = get_aerodynamic_drag(state, iStage, Parameter);
 
     % The local gravity is computed in a separated function
     localGravityAcceleration = get_local_gravity(h, Parameter);
 
-    % The derivative of the altitude and theta are in the same state
+    % The derivatives of the altitude and horizontal position are in the same state
     % vector, so calculation is straight-forward.
-    derivativeH = hDot;
-    derivativeTheta = thetaDot;
+    derivativeX = velocity * cos(gamma);
+    derivativeH = velocity * sin(gamma);
 
     % The radial and anglar accelerations come from dynamics. A better
     % explanation is pending.
-    derivativeHDot = ((thrust - drag)*sin(gamma))/mass + ...
-                     (rEarth + h) * thetaDot^2 - localGravityAcceleration;
-    derivativeThetaDot = ((thrust - drag)*cos(gamma)/mass - 2*hDot*thetaDot) / (rEarth + h);
-
+    derivativeVelocity = ((thrust - drag))/mass - ...
+                     localGravityAcceleration * sin(gamma);
+                 
+    if h < 100
+        derivativeGamma = 0;
+    else
+        derivativeGamma = -(velocity^(-1)) * (localGravityAcceleration - (velocity^2)/(earthRadius + h))*cos(gamma);
+    end
+    
     % The derivative of the mass is obtained with an external function
     derivativeMass = get_fuel_consumption(thrust, Parameter, iStage);
 
 
-    derivativeStateArray = [derivativeH; derivativeTheta; derivativeHDot; derivativeThetaDot; derivativeMass];
+    derivativeStateArray = [derivativeVelocity; derivativeGamma; derivativeX; derivativeH; derivativeMass];
 
 end
 

@@ -5,15 +5,13 @@ Information file for the code in LaunchTrajectory/
 
 The state array contains the current state of the rocket at any given time. Contains the following values:
 
-	> Altitude of the rocket above SL
-	> Angle between the vector pointing from the center of
-	   the Earth to the launch site, and from the center
-	   of the Earth to the rocket, in radians
-	> Derivative of altitude with time, that is, vetical
-	   speed, in meters per second
-	> Derivative of the angle of the seconda element with
-	   respect to time, in radians per second
-	> Total mass of the rocket, in kg
+	> Absolute velocity of the rocket with respect to ground
+	> Flight path angle, angle between the velocity vector
+          of the rocket and the local horizon, in radians
+	> Horizontal distance between the rocket and the
+    	  launch site, in meters
+	> Altitude of the rocket above SL, in meters
+ 	> Total mass of the rocket, in kg
 
 
 	PARAMETER STRUCTURE
@@ -50,4 +48,4 @@ Parameter
 |
 |-----Control
 	|
-	|-Empty by now	
+	|-initialConditions		array with [initialVelocity, initialGamma, initialAltitude, initialX, intialMass]
