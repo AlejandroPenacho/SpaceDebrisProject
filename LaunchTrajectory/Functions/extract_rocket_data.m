@@ -40,9 +40,15 @@ function [RocketData] = extract_rocket_data(rocketFilename)
     for iStage = 1: RocketData.nStages
 
         % The structure of the stage is initialized
-        StageData = struct("initialMass", 0, "maxThrust", 0, "Isp", 0, ...
-                           "payloadRatio", 0, "structuralRatio", 0, ...
-                           "surface", 0, "C_D", 0);
+        StageData = struct( "initialMass",          0, ...
+                            "maxThrust",            0, ...
+                            "Isp",                  0, ...
+                            "payloadRatio",         0, ...
+                            "structuralRatio",      0, ...
+                            "surface",              0, ...
+                            "C_D", struct(  "type",     "", ...
+                                            "mach",     0, ... 
+                                            "value",    0));
 
         % The first number is the stage. Only used for making the file more
         % readable, skipped in the function.
@@ -57,7 +63,18 @@ function [RocketData] = extract_rocket_data(rocketFilename)
         StageData.payloadRatio = fscanf(fID, "%f", 1);
         StageData.structuralRatio = fscanf(fID, "%f", 1);
         StageData.surface = fscanf(fID, "%f", 1);
-        StageData.C_D = fscanf(fID, "%f", 1);
+        dragValue = fscanf(fID, "%f", 1);
+        
+        if isempty(dragValue)
+            dragFile = fscanf(fID, "%s", 1);
+            StageData.C_D.type = "table";
+            StageData.C_D.mach = readmatrix(dragFile, 'Range','A3:A58');
+            StageData.C_D.value = readmatrix(dragFile, 'Range','B3:B58');
+        else
+            StageData.C_D.type = "constant";
+            StageData.C_D.mach = 0;
+            StageData.C_D.value = dragValue;
+        end
 
         % The initial mass is not included in the file, since it is
         % redundant. Instead, it is calculated from the inital mass for the

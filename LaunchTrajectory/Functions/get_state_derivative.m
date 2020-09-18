@@ -62,8 +62,13 @@ function [derivativeStateArray] = get_state_derivative(t, state, Data)
 
     % The radial and anglar accelerations come from dynamics. A better
     % explanation is pending.
-    derivativeVelocity = ((thrust - drag))/mass - ...
-                     localGravityAcceleration * sin(gamma);
+    propulsionAcceleration = thrust / mass;
+    dragAcceleration = -drag/mass;
+    gravitationalAcceleration = -localGravityAcceleration * sin(gamma);
+    
+    derivativeVelocity = propulsionAcceleration + ...
+                         dragAcceleration + ...
+                         gravitationalAcceleration;
                  
     if h < 100
         derivativeGamma = 0;
@@ -75,7 +80,14 @@ function [derivativeStateArray] = get_state_derivative(t, state, Data)
     derivativeMass = get_fuel_consumption(thrust, Parameter, iStage);
 
 
-    derivativeStateArray = [derivativeVelocity; derivativeGamma; derivativeX; derivativeH; derivativeMass];
+    derivativeStateArray = [derivativeVelocity; ...
+                            derivativeGamma; ...
+                            derivativeX; ...
+                            derivativeH; ...
+                            derivativeMass; ...
+                            propulsionAcceleration;
+                            dragAcceleration;
+                            gravitationalAcceleration];
 
 end
 

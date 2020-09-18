@@ -8,4 +8,4 @@ Stage:	Max. thrust(N):		Specific impulse(s):	Payload ratio:		Structural ratio:	C
 
 1       7607000             282                     0.257446            0.069                5.75                   dragProfile1.txt
 
-2       934000              348                     0.07175             0.038                5.75                   dragProfile1.txt
+2       934000              348                     0.0                0.038                5.75                   dragProfile1.txt

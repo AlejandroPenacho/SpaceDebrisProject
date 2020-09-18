@@ -3,10 +3,21 @@ function [D] = get_aerodynamic_drag(stateArray, iStage, Parameter)
 %   Uses the height of the rocket
 
 
-    [~,~,~,rho]= atmosisa(stateArray(1));
+    [~,speedOfSound,~,rho]= atmosisa(stateArray(4));
 
-    velocity = (stateArray(3).^2 + (stateArray(4) * (Parameter.Constant.earthRadius + stateArray(1))).^2).^0.5;
+    velocity = stateArray(1);
+    mach = velocity/speedOfSound;
+    
+    if Parameter.Rocket.Stage(iStage).C_D.type == "constant"
+        C_D = Parameter.Rocket.Stage(iStage).C_D.value;
+    else
+        C_D = interp1(Parameter.Rocket.Stage(iStage).C_D.mach, ...
+                      Parameter.Rocket.Stage(iStage).C_D.value, ...
+                      mach, ...
+                      "linear", ...
+                      "extrap");
+    end
 
-    D = 50;
+    D = 0.5*C_D*Parameter.Rocket.Stage(iStage).surface*rho*velocity^2;
 end
 

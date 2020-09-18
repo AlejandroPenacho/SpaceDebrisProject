@@ -24,7 +24,8 @@ function [Results] = integrate_trajectory(Parameter)
             IC = Parameter.Control.initialConditions;
             tSpan = [0, 1000];
         else
-            IC = Results.stateArray(end, 1:5);
+            IC = Results.stateArray(end, 1:8);
+            IC(5) = Rocket.Stage(iStage).initialMass;
             tSpan = Results.timeArray(end) + [0, 1000];
         end
 
@@ -44,6 +45,18 @@ function [Results] = integrate_trajectory(Parameter)
 
         stageStateArray = extend_state_info(stageStateArray, Parameter, iStage);
         Results.stateArray = [Results.stateArray; stageStateArray];
+        
+        nChanges = Parameter.Rocket.nStages;
+        stageChangeIndex = zeros(nChanges-1,1);
+        changeNumber = 0;
+        
+        for iStep = 2:length(Results.stateArray)
+            if Results.stateArray(iStep,end) ~= Results.stateArray(iStep-1,end)
+                changeNumber = changeNumber + 1;
+                stageChangeIndex(changeNumber) = iStep;
+            end
+            Results.stageChange = stageChangeIndex;
+        end
     end
 end
 
@@ -58,6 +71,7 @@ function [remainingFuel, isterminal, direction] = odeStopEvent(t,state, Data)
     Parameter = Data{1};
     iStage = Data{2};
     StageData = Parameter.Rocket.Stage(iStage);
-    remainingFuel = state(5) - StageData.initialMass * (1-StageData.payloadRatio)*(1-StageData.structuralRatio);
+    remainingFuel = state(5) - StageData.initialMass * ...
+                   (StageData.payloadRatio + (1-StageData.payloadRatio)*StageData.structuralRatio);
 
 end
