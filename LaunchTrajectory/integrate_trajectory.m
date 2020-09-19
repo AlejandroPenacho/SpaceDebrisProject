@@ -29,8 +29,12 @@ function [Results] = integrate_trajectory(Parameter)
             tSpan = Results.timeArray(end) + [0, 1000];
         end
 
-        options = odeset('Events',@(t, state) odeStopEvent(t, state, {Parameter, iStage}));
-
+        if Rocket.Stage(iStage).maxThrust ~= 0
+            options = odeset('Events',@(t, state) odeFuelStopEvent(t, state, {Parameter, iStage}));
+        else
+            options = odeset('Events',@(t, state) odeMaxHStopEvent(t, state, {Parameter, iStage}));
+        end
+        
         [stageTimeArray, stageStateArray] = ...
             ode45(@(t,x) get_state_derivative(t,x,{Parameter, iStage}), tSpan, IC, options);
 
@@ -61,7 +65,7 @@ function [Results] = integrate_trajectory(Parameter)
 end
 
 
-function [remainingFuel, isterminal, direction] = odeStopEvent(t,state, Data)
+function [remainingFuel, isterminal, direction] = odeFuelStopEvent(t,state, Data)
     % The function tracks the remaing fuel in the current rocket stage.
     % When it reaches zero, the integration is stopped so next stage is
     % started.
@@ -73,5 +77,19 @@ function [remainingFuel, isterminal, direction] = odeStopEvent(t,state, Data)
     StageData = Parameter.Rocket.Stage(iStage);
     remainingFuel = state(5) - StageData.initialMass * ...
                    (StageData.payloadRatio + (1-StageData.payloadRatio)*StageData.structuralRatio);
+
+end
+
+function [Vvertical, isterminal, direction] = odeMaxHStopEvent(t,state, Data)
+    % The function tracks the remaing fuel in the current rocket stage.
+    % When it reaches zero, the integration is stopped so next stage is
+    % started.
+    isterminal = 1;
+    direction = -1;
+
+    Parameter = Data{1};
+    iStage = Data{2};
+    StageData = Parameter.Rocket.Stage(iStage);
+    Vvertical = state(1) * sin(state(2));
 
 end

@@ -11,7 +11,7 @@ Parameter(1:10) = struct("Rocket", RocketData, "Control", ControlStruct, "Consta
 
 for iRocket = 1:10
     Parameter(iRocket).Control.initialConditions = [0, ...
-                                                    pi/2 - 0.005 + 0.005* iRocket/10, ...
+                                                    pi/2 - 0.06 + 0.06* iRocket/10, ...
                                                     0, ...
                                                     0, ...
                                                     RocketData.initialMass, ...
@@ -31,17 +31,17 @@ subplot(1,3,1)
 title("Trajectory")
 hold on
 for iRocket = 1:10
-    plot(Results(iRocket).stateArray(:,3), Results(iRocket).stateArray(:,4))
+    plot(Results(iRocket).stateArray(:,3)/1000, Results(iRocket).stateArray(:,4)/1000)
     for i = 1:(Results(iRocket).Parameter.Rocket.nStages-1)
         index = Results(iRocket).stageChange(i);
-        scatter(Results(iRocket).stateArray(index,3), Results(iRocket).stateArray(index,4))
+        scatter(Results(iRocket).stateArray(index,3)/1000, Results(iRocket).stateArray(index,4)/1000)
     end
 end
 hold off
-xlabel("X (m)")
-ylabel("Y (m)")
+xlabel("X (km)")
+ylabel("Y (km)")
 grid minor
-daspect([1 1 1])
+% daspect([1 1 1])
 
 subplot(1,3,2)
 title("Velocity profile")
