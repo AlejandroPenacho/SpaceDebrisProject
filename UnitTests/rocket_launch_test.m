@@ -2,7 +2,7 @@
 % the information of the rocket works. And testing the integration.
 clc; clear
 
-RocketData = extract_rocket_data("rocket1.txt");
+RocketData = extract_rocket_data("rocket2.txt");
 ControlStruct = struct("initialConditions", 0);
 ConstantStruct = struct("earthRadius", 6371000, ...
                         "earthSLGravity", 9.81);
@@ -11,7 +11,7 @@ Parameter(1:10) = struct("Rocket", RocketData, "Control", ControlStruct, "Consta
 
 for iRocket = 1:10
     Parameter(iRocket).Control.initialConditions = [0, ...
-                                                    pi/2 - 0.06 + 0.06* iRocket/10, ...
+                                                    pi/2 - 0.015 + 0.006* iRocket/10, ...
                                                     0, ...
                                                     0, ...
                                                     RocketData.initialMass, ...
@@ -27,7 +27,7 @@ end
 
 
 figure
-subplot(1,3,1)
+subplot(2,3,1)
 title("Trajectory")
 hold on
 for iRocket = 1:10
@@ -43,7 +43,7 @@ ylabel("Y (km)")
 grid minor
 % daspect([1 1 1])
 
-subplot(1,3,2)
+subplot(2,3,2)
 title("Velocity profile")
 hold on
 for iRocket = 1:10
@@ -58,7 +58,7 @@ xlabel("Time(s)")
 ylabel("Speed (m/s)")
 grid minor  
 
-subplot(1,3,3)
+subplot(2,3,3)
 title("Velocity-altitude profile")
 hold on
 for iRocket = 1:10
@@ -70,6 +70,23 @@ for iRocket = 1:10
 end
 hold off
 xlabel("Speed (m/s)")
+ylabel("Altitude (km)")
+grid minor  
+ylim([0 300])
+
+
+subplot(2,3,4)
+title("Altitude profile")
+hold on
+for iRocket = 1:10
+    plot(Results(iRocket).timeArray(:), Results(iRocket).stateArray(:,4)/1000)
+    for i = 1:(Results(iRocket).Parameter.Rocket.nStages-1)
+        index = Results(iRocket).stageChange(i);
+        scatter(Results(iRocket).timeArray(index,1), Results(iRocket).stateArray(index,4)/1000)
+    end
+end
+hold off
+xlabel("Time (s)")
 ylabel("Altitude (km)")
 grid minor  
 ylim([0 300])

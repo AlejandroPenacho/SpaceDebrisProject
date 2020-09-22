@@ -2,10 +2,12 @@ Initial mass(kg):
 433100
 
 Number of stages:
-2
+3
 
 Stage:	Max. thrust(N):		Specific impulse(s):	Payload ratio:		Structural ratio:	Cross-section(m^2):     C_D:
 
 1       7607000             282                     0.257446            0.069                5.75                   dragProfile1.txt
 
-2       934000              348                     0.0                0.038                5.75                   dragProfile1.txt
+2       934000              348                     0.15                0.038                5.75                   dragProfile1.txt
+
+3       0                   1                       0                   0                    5.75                   dragProfile1.txt    
