@@ -35,7 +35,7 @@ elseif 850*k<h && h<=900*k
     M=4.4;
 elseif 950*k<h && h<=1000*k
     M=4.12;
-else 1000*k<h
+else 
     M=3.94;
 end 
 R=Rm/M;
