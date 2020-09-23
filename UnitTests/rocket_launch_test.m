@@ -121,19 +121,19 @@ grid minor
 ylim([0 300])
 
 
-[aArray, minHarray, maxHarray] = get_deploy_region();
+[aArray, minEarray, maxEarray] = get_deploy_region();
 IDarray = cell(nRockets,1);
 
 figure
 title("Phase space diagrama")
-xlabel("a (km)")
-ylabel("h (km^2/s)")
+xlabel("e")
+ylabel("a (km)")
 hold on
 
-% plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results);
+plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results);
 
-plot(aArray/1000, minHarray/10^6)
-plot(aArray/1000, maxHarray/10^6)
+plot(minEarray, aArray/1000)
+plot(maxEarray, aArray/1000)
 
 hold off
 

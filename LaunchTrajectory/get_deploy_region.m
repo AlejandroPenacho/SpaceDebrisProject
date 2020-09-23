@@ -1,4 +1,4 @@
-function [aArray, minHarray, maxHarray] = get_deploy_region()
+function [aArray, minEarray, maxEarray] = get_deploy_region()
 % From the objective file given, extracts the region of the phase space
 % (altitude and velocity) at which the rocket should be when gamma = 0 to
 % consider the mission succesful
@@ -12,8 +12,8 @@ function [aArray, minHarray, maxHarray] = get_deploy_region()
 
     aArray = linspace(minRadius, maxRadius, 1000);
     
-    minHarray = zeros(1000,1);
-    maxHarray = zeros(1000,1);
+    minEarray = zeros(1000,1);
+    maxEarray = zeros(1000,1);
     
     for i=1:1000
         a_0 = aArray(i);
@@ -25,8 +25,8 @@ function [aArray, minHarray, maxHarray] = get_deploy_region()
         
         % min_e = 0;
         
-        maxHarray(i) = sqrt(mu*a_0);
-        minHarray(i) = sqrt(mu * a_0 * (1 - max_e^2));
+        maxEarray(i) = max_e;
+        minEarray(i) = 0;
         
     end
     

@@ -17,7 +17,7 @@ function [outputArg1,outputArg2] = plot_rocket_map(xName, xArray, yName, yArray,
     yMesh = yMesh .* yArray;
     
     aMesh = zeros(nXValues, nYValues);
-    hMesh = zeros(nXValues, nYValues);
+    eMesh = zeros(nXValues, nYValues);
     
     for iRocket = 1:(nXValues*nYValues)
         xIndex = mod(iRocket-1, nXValues)+1;
@@ -27,23 +27,23 @@ function [outputArg1,outputArg2] = plot_rocket_map(xName, xArray, yName, yArray,
         orbitalSpeed = Results(iRocket).stateArray(end, 1);
         gamma = Results(iRocket).stateArray(end, 2);
         
-        aMesh(xIndex, yIndex) = (mu * orbitalRadius)/...
-                                (orbitalSpeed^2 * orbitalRadius + 2*mu);
-        hMesh(xIndex, yIndex) = orbitalSpeed * ...
-                                cos(gamma) * ...
-                                orbitalRadius;
+        h = orbitalSpeed * cos(gamma) * orbitalRadius;
+        a = (mu/2)*(mu/orbitalRadius - (orbitalSpeed^2)/2)^(-1);
+        
+        aMesh(xIndex, yIndex) = a/1000;
+        eMesh(xIndex, yIndex) = sqrt(1 - (h^2)/(mu*a));
     end
     
     for xIndex=1:nXValues
         for yIndex=1:nYValues
-            scatter(hMesh(xIndex, yIndex), aMesh(xIndex,yIndex), 7, "filled")
+            scatter(eMesh(xIndex, yIndex), aMesh(xIndex,yIndex), 7, "filled")
             
             if xIndex ~= nXValues
-                plot( [hMesh(xIndex, yIndex), hMesh(xIndex+1, yIndex)], ...
+                plot( [eMesh(xIndex, yIndex), eMesh(xIndex+1, yIndex)], ...
                       [aMesh(xIndex,yIndex), aMesh(xIndex+1,yIndex)], "k");
             end
             if yIndex ~= nYValues
-                plot( [hMesh(xIndex, yIndex), hMesh(xIndex, yIndex+1)], ...
+                plot( [eMesh(xIndex, yIndex), eMesh(xIndex, yIndex+1)], ...
                       [aMesh(xIndex,yIndex), aMesh(xIndex,yIndex+1)], "k");
             end            
         end
@@ -54,14 +54,14 @@ function [outputArg1,outputArg2] = plot_rocket_map(xName, xArray, yName, yArray,
     
     
     for xIndex = 1:nXValues
-        text(hMesh(xIndex, end)-0.12, aMesh(xIndex,end), num2str(xArray(xIndex)))
+        text(eMesh(xIndex, end)-0.12, aMesh(xIndex,end), num2str(xArray(xIndex)))
     end
-    text(mean(hMesh(:,end))-0.3, mean(aMesh(:,end)), xName);
+    text(mean(eMesh(:,end))-0.3, mean(aMesh(:,end)), xName);
     
     for yIndex = 1:nYValues
-        text(hMesh(1,yIndex), aMesh(1,yIndex)-17, num2str(yArray(yIndex)))
+        text(eMesh(1,yIndex), aMesh(1,yIndex)-17, num2str(yArray(yIndex)))
     end   
-    text(mean(hMesh(1,:)), mean(aMesh(1,:)-35), yName);
+    text(mean(eMesh(1,:)), mean(aMesh(1,:)-35), yName);
     
 end
 
