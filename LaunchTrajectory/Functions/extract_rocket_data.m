@@ -33,6 +33,7 @@ function [RocketData] = extract_rocket_data(rocketFilename)
     fgetl(fID);
     fgetl(fID);
     fgetl(fID);
+    
 
     %The information regarding each stage is stored in a line of a table. A
     %loop has been created so the information for each stage is obtained.
@@ -93,5 +94,7 @@ function [RocketData] = extract_rocket_data(rocketFilename)
 
         RocketData.Stage(iStage) = StageData;
     end
+    
+    fclose(fID);
 end
 

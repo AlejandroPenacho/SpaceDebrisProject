@@ -5,23 +5,24 @@ clc; clear
 RocketData = extract_rocket_data("rocket2.txt");
 ControlStruct = struct("initialConditions", 0);
 ConstantStruct = struct("earthRadius", 6371000, ...
-                        "earthSLGravity", 9.81);
+                        "earthSLGravity", 9.81, ...
+                        "mu", 3.986004418*10^14);
                     
 
-nValuesGamma = 5;
-nValuesPayload = 10;
+nValuesGamma = 3;
+nValuesPayload = 3;
 
 gammaMeanValue = pi/2 - 0.048;
 gammaDispersion = 0.003;
 
 gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
-payloadArray = linspace(0.06, 0.18, nValuesPayload);                    
+payloadArray = linspace(0.1133, 0.14, nValuesPayload);                    
 
 nRockets = nValuesGamma * nValuesPayload;
 
 Parameter(1:nRockets) = struct("Rocket", RocketData, "Control", ControlStruct, "Constant", ConstantStruct);
 
-
+Objective = extract_objective("rocketObjective.txt", Parameter(1));
 
 for iRocket = 1:nRockets
     
@@ -121,19 +122,61 @@ grid minor
 ylim([0 300])
 
 
-[aArray, minHarray, maxHarray] = get_deploy_region();
+subplot(2,3,5)
+title("Energy profile")
+hold on
+for iRocket = 1:nRockets
+    energyArray = (Results(iRocket).stateArray(:,1).^2)/2 - ...
+                  Objective.mu./(Results(iRocket).stateArray(:,4) + Objective.earthRadius) + ...
+                  Objective.mu./Objective.earthRadius;
+    plot(Results(iRocket).timeArray(:), energyArray/Objective.meanEnergy)
+    for i = 1:(Results(iRocket).Parameter.Rocket.nStages-1)
+        index = Results(iRocket).stageChange(i);
+        if index ~= 0
+            scatter(Results(iRocket).timeArray(index,1), energyArray(index)/Objective.meanEnergy)
+        end
+    end
+end
+hold off
+xlabel("Time (s)")
+ylabel("Energy")
+grid minor  
+
+
+subplot(2,3,6)
+title("Angular momentum profile")
+hold on
+for iRocket = 1:nRockets
+    hArray = Results(iRocket).stateArray(:,1) .* ...
+             cos(Results(iRocket).stateArray(:,2)) .* ...
+             (Results(iRocket).stateArray(:,4) + Objective.earthRadius);
+    plot(Results(iRocket).timeArray(:), hArray/Objective.meanH)
+    for i = 1:(Results(iRocket).Parameter.Rocket.nStages-1)
+        index = Results(iRocket).stageChange(i);
+        if index ~= 0
+            scatter(Results(iRocket).timeArray(index,1), hArray(index)/Objective.meanH)
+        end
+    end
+end
+hold off
+xlabel("Time (s)")
+ylabel("Angular momentum")
+grid minor  
+
+
+[energyArray, minHarray, maxHarray] = get_deploy_region(Objective);
 IDarray = cell(nRockets,1);
 
 figure
-title("Phase space diagrama")
-xlabel("a (km)")
-ylabel("h (km^2/s)")
+title("Phase space diagram")
+ylabel("Energy")
+xlabel("\DeltaH")
 hold on
 
-% plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results);
+plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results, Objective);
 
-plot(aArray/1000, minHarray/10^6)
-plot(aArray/1000, maxHarray/10^6)
+plot(minHarray, energyArray, "m")
+plot(maxHarray, energyArray, "m")
 
 hold off
 

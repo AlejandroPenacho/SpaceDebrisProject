@@ -1,0 +1,5 @@
+Minimum altitude:
+650000
+
+Maximum altitude:
+850000
