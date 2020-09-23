@@ -7,19 +7,36 @@ ControlStruct = struct("initialConditions", 0);
 ConstantStruct = struct("earthRadius", 6371000, ...
                         "earthSLGravity", 9.81);
                     
-nRockets = 10;
+
+nValuesGamma = 5;
+nValuesPayload = 5;
+
+gammaMeanValue = pi/2 - 0.05;
+gammaDispersion = 0.003;
+
+gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
+payloadArray = linspace(0.14, 0.2, nValuesPayload);                    
+
+nRockets = nValuesGamma * nValuesPayload;
 
 Parameter(1:nRockets) = struct("Rocket", RocketData, "Control", ControlStruct, "Constant", ConstantStruct);
 
+
+
 for iRocket = 1:nRockets
+    
+    gammaIndex = mod(iRocket-1, nValuesGamma)+1;
+    payloadIndex = ceil(iRocket/nValuesGamma);
+    
     Parameter(iRocket).Control.initialConditions = [0, ...
-                                                    pi/2 - 0.05 + 0.006* iRocket/nRockets, ...
+                                                    gammaArray(gammaIndex), ...
                                                     0, ...
                                                     0, ...
                                                     RocketData.initialMass, ...
                                                     0, ...
                                                     0, ...
                                                     0];
+    Parameter(iRocket).Rocket.Stage(2).payloadRatio = payloadArray(payloadIndex);
 end
 
 
@@ -110,9 +127,8 @@ title("Phase space diagrama")
 xlabel("Velocity (km/s)")
 ylabel("Altitude (km)")
 hold on
-for iRocket = 1:nRockets
-    scatter(Results(iRocket).stateArray(end,1)/1000, Results(iRocket).stateArray(end,4)/1000, "filled")
-end
+
+plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results);
 
 plot([minVarray; flipud(maxVarray);minVarray(1)]/1000, [altitudeArray'; flipud(altitudeArray');altitudeArray(1)]/1000)
 
