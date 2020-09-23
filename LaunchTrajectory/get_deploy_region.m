@@ -1,4 +1,4 @@
-function [altitudeArray, minVarray, maxVarray, circularVarray] = get_deploy_region()
+function [aArray, minHarray, maxHarray] = get_deploy_region()
 % From the objective file given, extracts the region of the phase space
 % (altitude and velocity) at which the rocket should be when gamma = 0 to
 % consider the mission succesful
@@ -10,27 +10,24 @@ function [altitudeArray, minVarray, maxVarray, circularVarray] = get_deploy_regi
     minRadius = minAltitude + rEarth;
     maxRadius = maxAltitude + rEarth;
 
-    altitudeArray = linspace(minAltitude, maxAltitude, 1000);
+    aArray = linspace(minRadius, maxRadius, 1000);
     
-    minVarray = zeros(1000,1);
-    maxVarray = zeros(1000,1);
-    circularVarray = zeros(1000,1);
-    
-     options = optimset('Display','off');
+    minHarray = zeros(1000,1);
+    maxHarray = zeros(1000,1);
     
     for i=1:1000
-        r_0 = altitudeArray(i) + rEarth;
-        r_f_min = minRadius;
-        r_f_max = maxRadius;
-        minVarray(i) = fsolve( @(v_0) ((v_0^2)/2 - mu/r_0 - ((v_0^2)*(r_0^2))/(2*r_f_min^2) + mu/r_f_min), 5000, options);
-        maxVarray(i) = fsolve( @(v_0) ((v_0^2)/2 - mu/r_0 - ((v_0^2)*(r_0^2))/(2*r_f_max^2) + mu/r_f_max), 5000, options);
-        circularVarray(i) = sqrt(mu/r_0);
+        a_0 = aArray(i);
         
-        if i == 1
-            minVarray(i) = circularVarray(i);
-        elseif i == 1000
-            maxVarray(i) = circularVarray(i);
-        end
+        e_1 = 1 - minRadius/a_0;
+        e_2 = maxRadius/a_0 - 1;
+        
+        max_e = min(e_1, e_2);
+        
+        % min_e = 0;
+        
+        maxHarray(i) = sqrt(mu*a_0);
+        minHarray(i) = sqrt(mu * a_0 * (1 - max_e^2));
+        
     end
     
 

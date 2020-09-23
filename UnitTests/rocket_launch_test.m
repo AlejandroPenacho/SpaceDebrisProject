@@ -9,13 +9,13 @@ ConstantStruct = struct("earthRadius", 6371000, ...
                     
 
 nValuesGamma = 5;
-nValuesPayload = 5;
+nValuesPayload = 10;
 
-gammaMeanValue = pi/2 - 0.05;
+gammaMeanValue = pi/2 - 0.048;
 gammaDispersion = 0.003;
 
 gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
-payloadArray = linspace(0.14, 0.2, nValuesPayload);                    
+payloadArray = linspace(0.06, 0.18, nValuesPayload);                    
 
 nRockets = nValuesGamma * nValuesPayload;
 
@@ -98,7 +98,9 @@ xlabel("Speed (m/s)")
 ylabel("Altitude (km)")
 grid minor  
 ylim([0 300])
-
+%         if stageStateArray(end,2) <= 0
+%             break
+%         end
 
 subplot(2,3,4)
 title("Altitude profile")
@@ -119,20 +121,19 @@ grid minor
 ylim([0 300])
 
 
-[altitudeArray, minVarray, maxVarray, circularVarray] = get_deploy_region();
+[aArray, minHarray, maxHarray] = get_deploy_region();
 IDarray = cell(nRockets,1);
 
 figure
 title("Phase space diagrama")
-xlabel("Velocity (km/s)")
-ylabel("Altitude (km)")
+xlabel("a (km)")
+ylabel("h (km^2/s)")
 hold on
 
-plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results);
+% plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results);
 
-plot([minVarray; flipud(maxVarray);minVarray(1)]/1000, [altitudeArray'; flipud(altitudeArray');altitudeArray(1)]/1000)
-
-plot(circularVarray/1000, altitudeArray/1000)
+plot(aArray/1000, minHarray/10^6)
+plot(aArray/1000, maxHarray/10^6)
 
 hold off
 
