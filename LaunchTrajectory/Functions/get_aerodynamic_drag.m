@@ -1,13 +1,10 @@
 function [D] = get_aerodynamic_drag(stateArray, iStage, Parameter)
 %Computes the drag force acting on the rocket for a given state.
 %   Uses the height of the rocket
-    tropopauseLimit = 20000;
 
-    [~,speedOfSound,~,rho]= atmosisa(stateArray(4));
+    [~,speedOfSound,~,~]= atmosisa(stateArray(4));
     
-    if stateArray(4) > tropopauseLimit
-        rho = 1.225 * (1.225 / 0.088)^(-stateArray(4)/tropopauseLimit);
-    end
+    rho = get_density(stateArray(4));
 
     velocity = stateArray(1);
     mach = velocity/speedOfSound;
