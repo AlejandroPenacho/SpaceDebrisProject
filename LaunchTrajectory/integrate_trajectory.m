@@ -26,7 +26,7 @@ function [Results] = integrate_trajectory(Parameter)
         else
             IC = Results.stateArray(end, 1:8);
             IC(5) = Rocket.Stage(iStage).initialMass;
-            tSpan = Results.timeArray(end) + [0, 1000];
+            tSpan = Results.timeArray(end) + [0, 10000];
         end
 
         if Rocket.Stage(iStage).maxThrust ~= 0
@@ -61,6 +61,11 @@ function [Results] = integrate_trajectory(Parameter)
             end
             Results.stageChange = stageChangeIndex;
         end
+        
+        if stageStateArray(end,2) <= 0
+            break
+        end
+        
     end
 end
 
