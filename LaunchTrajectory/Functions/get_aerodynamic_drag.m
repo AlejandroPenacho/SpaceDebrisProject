@@ -2,7 +2,7 @@ function [D] = get_aerodynamic_drag(stateArray, iStage, Parameter)
 %Computes the drag force acting on the rocket for a given state.
 %   Uses the height of the rocket
 
-    [~,speedOfSound,~,~]= atmosisa(stateArray(4));
+    speedOfSound= atmosisa(stateArray(4));
     
     rho = get_density(stateArray(4));
 
