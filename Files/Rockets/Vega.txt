@@ -1,0 +1,42 @@
+Initial mass(kg):
+134715
+
+Number of stages:
+5
+
+Stage:	Max. thrust(N):		Specific impulse(s):	Payload ratio:		Structural ratio:	Cross-section(m^2):     C_D:
+
+1       2261793.6             	279.5                   0.27985             	0.08916                	7.0685                  dragProfile1.txt
+
+2       1196427.6              	289                     0.31565			0.07156                	2.8353                  dragProfile1.txt
+
+3       313135.2                294                   	0.084                  	0.06678                 2.8353                  dragProfile1.txt
+       
+4 	2452.5			315.2			0.45			0			2.8353			dragProfile1.txt
+
+5	0			1			0			0			2.8353			dragProfile1.txt
+
+
+Information from www.spacelaunchreport.com/vega.html:
+
+
+				Stage 1				Stage 2			Stage 3			Stage 4		Stage 5
+				P80FW				Zefiro 23		Zefiro 9		AVUM		Payload
+								
+
+Diameter (m)			3				1.9			1.9			1.9		1.9
+
+Empty mass (kg)			8650				1900			780			0		450
+
+Propellant mass (kg)		88365				23900			10115			550		0
+
+Total mass (kg)			97015				25800			10900			550		450
+
+Thrust* (N)			2261793.6			1196427.6		313135.2		2452.5		0
+
+ISP** (s)			279.5				289			294			315.2		1
+
+
+
+*  Taken at SL for first stage, vacuumm for the others
+** Taken at vacuum 

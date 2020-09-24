@@ -1,0 +1,41 @@
+Initial mass(kg):
+32748
+
+Number of stages:
+3
+
+Stage:	Max. thrust(N):		Specific impulse(s):	Payload ratio:		Structural ratio:	Cross-section(m^2):     C_D:
+
+1       422654.04             	255                     0.1281            	0.0508                	2.211                   dragProfile1.txt
+
+2       31146.75              	327                     0.10727			0.09613                	2.211                   dragProfile1.txt
+
+3       0                   	1                       0                   	0                    	2.211                   dragProfile1.txt       
+
+
+Information from www.spacelaunchreport.com/falcon.html:
+
+
+				Falcon 1				Falcon 1			Payload
+				Stage 1					Stage 2				Satellite
+				[Merlin 1C				[Merlin 1A
+				Version]				Version*]
+
+
+
+Diameter (m)			1.678					1.678				1.678
+
+Empty mass (kg)			1451					360				450
+
+Propellant mass (kg)		27103					3385				0
+
+Total mass (kg)			28553					3745				450
+
+Thrust** (N)			422654.04				31146.75			0
+
+ISP** (s)			255					327				1
+
+
+
+*  Second stage of the 1C was not avaliable
+** The ISP and thrust are taken at SL for the first stage, and at vacuum for the second

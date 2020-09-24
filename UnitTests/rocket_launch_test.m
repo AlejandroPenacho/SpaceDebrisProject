@@ -2,23 +2,22 @@
 % the information of the rocket works. And testing the integration.
 clc; clear
 
-RocketData = extract_rocket_data("rocket2.txt");
+RocketData = extract_rocket_data("Epsilon.txt");
 ControlStruct = struct("initialConditions", 0);
 ConstantStruct = struct("earthRadius", 6371000, ...
                         "earthSLGravity", 9.81, ...
                         "mu", 3.986004418*10^14);
                     
 
-nValuesGamma = 3;
-nValuesPayload = 3;
+nValuesGamma = 5;
+nValuesPropellant = 1;
 
 gammaMeanValue = pi/2 - 0.048;
 gammaDispersion = 0.003;
 
 gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
-payloadArray = linspace(0.1133, 0.14, nValuesPayload);                    
 
-nRockets = nValuesGamma * nValuesPayload;
+nRockets = nValuesGamma * nValuesPropellant;
 
 Parameter(1:nRockets) = struct("Rocket", RocketData, "Control", ControlStruct, "Constant", ConstantStruct);
 
@@ -27,7 +26,7 @@ Objective = extract_objective("rocketObjective.txt", Parameter(1));
 for iRocket = 1:nRockets
     
     gammaIndex = mod(iRocket-1, nValuesGamma)+1;
-    payloadIndex = ceil(iRocket/nValuesGamma);
+    propellantIndex = ceil(iRocket/nValuesGamma);
     
     Parameter(iRocket).Control.initialConditions = [0, ...
                                                     gammaArray(gammaIndex), ...
@@ -37,7 +36,6 @@ for iRocket = 1:nRockets
                                                     0, ...
                                                     0, ...
                                                     0];
-    Parameter(iRocket).Rocket.Stage(2).payloadRatio = payloadArray(payloadIndex);
 end
 
 
@@ -173,7 +171,7 @@ ylabel("Energy")
 xlabel("\DeltaH")
 hold on
 
-plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results, Objective);
+plot_rocket_map("Gamma (rad)", gammaArray, "Propellant", propellantArray, Results, Objective);
 
 plot(minHarray, energyArray, "m")
 plot(maxHarray, energyArray, "m")
