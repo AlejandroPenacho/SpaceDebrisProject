@@ -2,22 +2,22 @@
 % the information of the rocket works. And testing the integration.
 clc; clear
 
-RocketData = extract_rocket_data("rocket2.txt");
+RocketData = extract_rocket_data("Epsilon.txt");
 ControlStruct = struct("initialConditions", 0);
 ConstantStruct = struct("earthRadius", 6371000, ...
                         "earthSLGravity", 9.81);
                     
 
 nValuesGamma = 5;
-nValuesPayload = 5;
+nValuesPropellant = 1;
 
 gammaMeanValue = pi/2 - 0.05;
 gammaDispersion = 0.003;
 
 gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
-payloadArray = linspace(0.14, 0.2, nValuesPayload);                    
+propellantArray = linspace(0.14, 0.2, nValuesPropellant);                    
 
-nRockets = nValuesGamma * nValuesPayload;
+nRockets = nValuesGamma * nValuesPropellant;
 
 Parameter(1:nRockets) = struct("Rocket", RocketData, "Control", ControlStruct, "Constant", ConstantStruct);
 
@@ -26,7 +26,7 @@ Parameter(1:nRockets) = struct("Rocket", RocketData, "Control", ControlStruct, "
 for iRocket = 1:nRockets
     
     gammaIndex = mod(iRocket-1, nValuesGamma)+1;
-    payloadIndex = ceil(iRocket/nValuesGamma);
+    propellantIndex = ceil(iRocket/nValuesGamma);
     
     Parameter(iRocket).Control.initialConditions = [0, ...
                                                     gammaArray(gammaIndex), ...
@@ -36,7 +36,6 @@ for iRocket = 1:nRockets
                                                     0, ...
                                                     0, ...
                                                     0];
-    Parameter(iRocket).Rocket.Stage(2).payloadRatio = payloadArray(payloadIndex);
 end
 
 
@@ -128,7 +127,7 @@ xlabel("Velocity (km/s)")
 ylabel("Altitude (km)")
 hold on
 
-plot_rocket_map("Gamma (rad)", gammaArray, "Payload", payloadArray, Results);
+plot_rocket_map("Gamma (rad)", gammaArray, "Propellant", propellantArray, Results);
 
 plot([minVarray; flipud(maxVarray);minVarray(1)]/1000, [altitudeArray'; flipud(altitudeArray');altitudeArray(1)]/1000)
 
