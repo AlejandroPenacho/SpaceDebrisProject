@@ -3,19 +3,33 @@
 clc; clear
 
 RocketData = extract_rocket_data("Epsilon.txt");
-ControlStruct = struct("initialConditions", 0);
+
+RocketData = change_propellant_mass(RocketData, 0.5);
+
+
+
+
+
+
+ControlStruct = struct("initialConditions", 0, ...
+                       "minAltitudeThrust", [0, 0, 170000, 0]);
 ConstantStruct = struct("earthRadius", 6371000, ...
                         "earthSLGravity", 9.81, ...
                         "mu", 3.986004418*10^14);
+                    
                     
 
 nValuesGamma = 5;
 nValuesPropellant = 1;
 
-gammaMeanValue = pi/2 - 0.048;
-gammaDispersion = 0.003;
+% gammaMeanValue = pi/2 - 0.495;
+% gammaDispersion = 0.003;
+
+gammaMeanValue = pi/2 - 0.21003;
+gammaDispersion = 0.001;
 
 gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
+propellantArray = 1;
 
 nRockets = nValuesGamma * nValuesPropellant;
 
@@ -161,9 +175,11 @@ xlabel("Time (s)")
 ylabel("Angular momentum")
 grid minor  
 
-
-[energyArray, minHarray, maxHarray] = get_deploy_region(Objective);
 IDarray = cell(nRockets,1);
+
+%% Plot in the a-h map
+
+[energyArray, minHarray, maxHarray] = get_deploy_region_ah(Objective);
 
 figure
 title("Phase space diagram")
@@ -171,11 +187,28 @@ ylabel("Energy")
 xlabel("\DeltaH")
 hold on
 
-plot_rocket_map("Gamma (rad)", gammaArray, "Propellant", propellantArray, Results, Objective);
+plot_rocket_map_ah("Gamma (rad)", gammaArray, "Propellant", propellantArray, Results, Objective);
 
 plot(minHarray, energyArray, "m")
 plot(maxHarray, energyArray, "m")
 
 hold off
 
-grid on
+%% Plot in the perigee-apogee region
+
+[perigeeArray, minApArray, maxApArray] = get_deploy_region_perap(Objective);
+
+figure
+title("Phase space diagram")
+ylabel("Apogee (km)")
+xlabel("Perigee (km)")
+hold on
+
+plot_rocket_map_perap("Gamma (rad)", gammaArray, "Propellant", propellantArray, Results, Objective);
+
+plot(perigeeArray/1000 - Objective.earthRadius/1000, ...
+     minApArray/1000 - Objective.earthRadius/1000, "m")
+plot([perigeeArray(1),perigeeArray, perigeeArray(2)]/1000 - Objective.earthRadius/1000, ...
+     [minApArray(1), maxApArray, minApArray(1)]/1000 - Objective.earthRadius/1000, "m")
+
+hold off

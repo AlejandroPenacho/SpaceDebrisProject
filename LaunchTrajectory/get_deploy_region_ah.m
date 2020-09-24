@@ -1,4 +1,4 @@
-function [energyArray, minHarray, maxHarray] = get_deploy_region(Objective)
+function [energyArray, minHarray, maxHarray] = get_deploy_region_ah(Objective)
 % From the objective file given, extracts the region of the phase space
 % (altitude and velocity) at which the rocket should be when gamma = 0 to
 % consider the mission succesful
