@@ -19,16 +19,19 @@ ConstantStruct = struct("earthRadius", 6371000, ...
                     
                     
 
-nValuesGamma = 5;
+nValuesGamma = 1;
 nValuesPropellant = 1;
 
 % gammaMeanValue = pi/2 - 0.495;
 % gammaDispersion = 0.003;
 
-gammaMeanValue = pi/2 - 0.158;
-gammaDispersion = 0.0001;
+gammaMeanValue = pi/2 - 0.15795;
+gammaDispersion = 0.00003;
 
-gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
+% gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
+
+gammaArray = 1.412883;
+
 propellantArray = 1;
 
 nRockets = nValuesGamma * nValuesPropellant;
