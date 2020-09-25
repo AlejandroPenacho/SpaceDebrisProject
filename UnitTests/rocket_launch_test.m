@@ -12,7 +12,7 @@ RocketData = change_propellant_mass(RocketData, 1);
 
 
 ControlStruct = struct("initialConditions", 0, ...
-                       "minAltitudeThrust", [0, 0, 760000, 0]);
+                       "minAltitudeThrust", [0, 0, 705000, 0]);
 ConstantStruct = struct("earthRadius", 6371000, ...
                         "earthSLGravity", 9.81, ...
                         "mu", 3.986004418*10^14);
@@ -25,7 +25,7 @@ nValuesPropellant = 1;
 % gammaMeanValue = pi/2 - 0.495;
 % gammaDispersion = 0.003;
 
-gammaMeanValue = pi/2 - 0.153;
+gammaMeanValue = pi/2 - 0.158;
 gammaDispersion = 0.0001;
 
 gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
