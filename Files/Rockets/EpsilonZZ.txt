@@ -1,16 +1,16 @@
 Initial mass(kg):
-62950
+95950
 
 Number of stages:
 4
 
 Stage:	Max. thrust(N):		Specific impulse(s):	Payload ratio:		Structural ratio:	Cross-section(m^2):     C_D:
 
-1       2150000             	283.6                   0.32804             	0.2198                	4.908                   dragProfile1.txt
+1       2150000             	283.6                   0.215216             	0.1235                	4.908                   dragProfile1.txt
 
 2       445177.8              	295                     0.16707			0.1279                	4.908                   dragProfile1.txt
 
-3       81324.9                 310.7                   0.1304                  0.1667                  1.6513                  dragProfile1.txt       
+3       81324.9                 310.7                   0.33156                  0.1667                  1.6513                  dragProfile1.txt       
 
 4 	0			1			0			0			1.6513			dragProfile1.txt
 
@@ -29,9 +29,9 @@ Diameter (m)			2.5				2.5			1.45			1.45
 
 Empty mass (kg)			9300				2200			500			450
 
-Propellant mass (kg)		33000				15000			2500			0
+Propellant mass (kg)		66000				15000			2500			0
 
-Total mass (kg)			42300				17200			3000			450
+Total mass (kg)			75300				17200			3000			450
 
 Thrust* (N)			2150000				445177.8		81324.9			0
 

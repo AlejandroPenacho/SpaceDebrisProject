@@ -2,9 +2,9 @@
 % the information of the rocket works. And testing the integration.
 clc; clear
 
-RocketData = extract_rocket_data("Epsilon.txt");
+RocketData = extract_rocket_data("EpsilonZZ.txt");
 
-RocketData = change_propellant_mass(RocketData, 0.5);
+RocketData = change_propellant_mass(RocketData, 1);
 
 
 
@@ -12,7 +12,7 @@ RocketData = change_propellant_mass(RocketData, 0.5);
 
 
 ControlStruct = struct("initialConditions", 0, ...
-                       "minAltitudeThrust", [0, 0, 170000, 0]);
+                       "minAltitudeThrust", [0, 0, 760000, 0]);
 ConstantStruct = struct("earthRadius", 6371000, ...
                         "earthSLGravity", 9.81, ...
                         "mu", 3.986004418*10^14);
@@ -25,8 +25,8 @@ nValuesPropellant = 1;
 % gammaMeanValue = pi/2 - 0.495;
 % gammaDispersion = 0.003;
 
-gammaMeanValue = pi/2 - 0.21003;
-gammaDispersion = 0.001;
+gammaMeanValue = pi/2 - 0.153;
+gammaDispersion = 0.0001;
 
 gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
 propellantArray = 1;
