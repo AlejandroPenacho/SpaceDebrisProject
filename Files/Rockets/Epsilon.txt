@@ -1,18 +1,13 @@
-Initial mass(kg):
-95950
-
 Number of stages:
-4
+3
 
-Stage:	Max. thrust(N):		Specific impulse(s):	Payload ratio:		Structural ratio:	Cross-section(m^2):     C_D:
+Stage:	Max. thrust(N):		Specific impulse(s):	Max propellant:		Structural mass:	Cross-section(m^2):     C_D:
 
-1       2150000             	283.6                   0.215216             	0.1235                	4.908                   dragProfile1.txt
+1       2150000             	283.6                   66000             	9300                	4.908                   dragProfile1.txt
 
-2       445177.8              	295                     0.16707			0.1279                	4.908                   dragProfile1.txt
+2       445177.8              	295                     15000			2200                	4.908                   dragProfile1.txt
 
-3       81324.9                 310.7                   0.1304                  0.1667                  1.6513                  dragProfile1.txt       
-
-4 	0			1			0			0			1.6513			dragProfile1.txt
+3       81324.9                 310.7                   2500                  	500                  	1.6513                  dragProfile1.txt       
 
 
 Information from www.spacelaunchreport.com/epsilon.html:

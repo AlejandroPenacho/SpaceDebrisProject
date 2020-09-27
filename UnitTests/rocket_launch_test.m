@@ -2,9 +2,8 @@
 % the information of the rocket works. And testing the integration.
 clc; clear
 
-RocketData = extract_rocket_data("EpsilonZZ.txt");
+RocketData = create_rocket("Epsilon.txt", 450, [-1, -1, 1400], true);
 
-RocketData = change_propellant_mass(RocketData, 1);
 
 
 
@@ -12,12 +11,11 @@ RocketData = change_propellant_mass(RocketData, 1);
 
 
 ControlStruct = struct("initialConditions", 0, ...
-                       "minAltitudeThrust", [0, 0, 705000, 0]);
+                       "maxGammaThrust", [10, 10, 0.01]);
 ConstantStruct = struct("earthRadius", 6371000, ...
                         "earthSLGravity", 9.81, ...
                         "mu", 3.986004418*10^14);
-                    
-                    
+                   
 
 nValuesGamma = 1;
 nValuesPropellant = 1;
@@ -25,12 +23,11 @@ nValuesPropellant = 1;
 % gammaMeanValue = pi/2 - 0.495;
 % gammaDispersion = 0.003;
 
-gammaMeanValue = pi/2 - 0.15795;
-gammaDispersion = 0.00003;
+
 
 % gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
 
-gammaArray = 1.412883;
+gammaArray = 1.37;
 
 propellantArray = 1;
 
@@ -181,22 +178,22 @@ grid minor
 IDarray = cell(nRockets,1);
 
 %% Plot in the a-h map
-
-[energyArray, minHarray, maxHarray] = get_deploy_region_ah(Objective);
-
-figure
-title("Phase space diagram")
-ylabel("Energy")
-xlabel("\DeltaH")
-hold on
-
-plot_rocket_map_ah("Gamma (rad)", gammaArray, "Propellant", propellantArray, Results, Objective);
-
-plot(minHarray, energyArray, "m")
-plot(maxHarray, energyArray, "m")
-
-hold off
-
+% 
+% [energyArray, minHarray, maxHarray] = get_deploy_region_ah(Objective);
+% 
+% figure
+% title("Phase space diagram")
+% ylabel("Energy")
+% xlabel("\DeltaH")
+% hold on
+% 
+% plot_rocket_map_ah("Gamma (rad)", gammaArray, "Propellant", propellantArray, Results, Objective);
+% 
+% plot(minHarray, energyArray, "m")
+% plot(maxHarray, energyArray, "m")
+% 
+% hold off
+% 
 %% Plot in the perigee-apogee region
 
 [perigeeArray, minApArray, maxApArray] = get_deploy_region_perap(Objective);

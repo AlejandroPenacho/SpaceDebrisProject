@@ -7,6 +7,8 @@ function [Results] = integrate_trajectory(Parameter)
     % the function, is defined. It includes a copy of the "Parameter"
     % structure for reference.
 
+    global thrustSwitch
+    
     Results = struct("Parameter", Parameter, "timeArray", [], "stateArray", []);
 
     % The options of the ode45 are defined
@@ -28,6 +30,7 @@ function [Results] = integrate_trajectory(Parameter)
             IC(5) = Rocket.Stage(iStage).initialMass;
             tSpan = Results.timeArray(end) + [0, 10000];
         end
+        
 
         if Rocket.Stage(iStage).maxThrust ~= 0
             options = odeset('Events',@(t, state) odeFuelStopEvent(t, state, {Parameter, iStage}));
