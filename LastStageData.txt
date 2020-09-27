@@ -1,0 +1,14 @@
+Initial position:
+
+	Perigee altitude: 	663.584 km
+	Apogee altitude: 	731.19 km
+
+
+Mass breakdown:
+	
+	Propellant mass:	309.452 kg  |
+	Structure:		384.428 kg  |===> Delta_V = 961.4349 km/s
+	Payload:		450 	kg  |
+	                        __________
+
+	Total mass:		1143.88 kg
