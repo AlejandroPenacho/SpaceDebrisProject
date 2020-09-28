@@ -3,27 +3,24 @@ function [Objective] = extract_objective(file, Parameter)
 %   Detailed explanation goes here
     fID = fopen(file);
     fgetl(fID);
-    Objective.minRadius = str2double(fgetl(fID)) + Parameter.Constant.earthRadius;
+    Objective.perigee = str2double(fgetl(fID)) + Parameter.Constant.earthRadius;
     fgetl(fID);
     fgetl(fID);
-    Objective.maxRadius = str2double(fgetl(fID)) + Parameter.Constant.earthRadius;
+    Objective.apogee = str2double(fgetl(fID)) + Parameter.Constant.earthRadius;
+    fgetl(fID);
+    fgetl(fID);
+    Objective.error = str2double(fgetl(fID))/100;
+    fclose(fID);
     
-    Objective.meanRadius = (Objective.minRadius + Objective.maxRadius)/2;
-    
-    Objective.earthEnergy = -Parameter.Constant.mu/Parameter.Constant.earthRadius;
-    
+    Objective.energy = Parameter.Constant.mu * (1/Parameter.Constant.earthRadius - ...
+                       1/(Objective.perigee+Objective.apogee));
+                   
+     
+    a = Objective.apogee + Objective.perigee;
+    e = (Objective.apogee + Objective.perigee)/(2*a);
+    Objective.h = sqrt(Parameter.Constant.mu * a * (1-e^2));
     Objective.mu = Parameter.Constant.mu;
     Objective.earthRadius = Parameter.Constant.earthRadius;
-    
-    Objective.minEnergy = -Parameter.Constant.mu/(2* Objective.minRadius) ...
-                           - Objective.earthEnergy;
-    Objective.maxEnergy = -Parameter.Constant.mu/(2* Objective.maxRadius) ...
-                           - Objective.earthEnergy;
-    Objective.meanEnergy = -Parameter.Constant.mu/(2* Objective.meanRadius) ...
-                           - Objective.earthEnergy;
-                       
-    Objective.meanH = sqrt(Objective.mu * Objective.meanRadius);
-    fclose(fID);
     
 end
 

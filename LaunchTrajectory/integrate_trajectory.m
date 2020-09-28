@@ -39,7 +39,7 @@ function [Results] = integrate_trajectory(Parameter)
         end
         
         [stageTimeArray, stageStateArray] = ...
-            ode45(@(t,x) get_state_derivative(t,x,{Parameter, iStage}), tSpan, IC, options);
+            ode15s(@(t,x) get_state_derivative(t,x,{Parameter, iStage}), tSpan, IC, options);
 
 
         % The time array of the stage is appended to the time array of the

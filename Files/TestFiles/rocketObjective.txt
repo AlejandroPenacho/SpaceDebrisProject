@@ -1,5 +1,8 @@
-Minimum altitude:
+Perigee altitude:
 650000
 
-Maximum altitude:
+Apogee altitude:
 850000
+
+Error (%):
+1
