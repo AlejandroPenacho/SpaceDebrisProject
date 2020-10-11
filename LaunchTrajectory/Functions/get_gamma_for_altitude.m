@@ -25,20 +25,21 @@ function [optimalGamma] = get_gamma_for_altitude(Parameter, desiredAltitude)
             delta = 0.05;
             while done == false
                 [gammaArray, altitudeArray] = what_is_going_on(Parameter, optimalGamma, delta);
-                figure
+                currentFig = figure;
                 hold on
                 plot(gammaArray, altitudeArray)
                 yline(desiredAltitude)
                 xline(optimalGamma)
                 hold off
                 [optimalGamma,~] = ginput(1);
+                close(currentFig);
                 
                 error = abs(1 - get_perigee(Parameter, optimalGamma)/desiredAltitude) * 100;
-                if error < 0.1
+                if error < 0.5
                     done = true;
                     fprintf("Success (error = %.2f %%)\n", error)
                 else
-                    delta = delta/2;
+                    delta = delta/10;
                     fprintf("Please keep refining (error = %.2f %%)\n", error)
                 end
             end

@@ -108,8 +108,8 @@ function [RocketData] = create_rocket(baseRocketFilename, payloadMass, deltaVarr
         fprintf("\nPayload: %.2f kg\n\n", payloadMass)
         fprintf("Stage\t\tOriginal Delta V (m/s)\t\tPropellant ratio (%%)\t\tDelta V (m/s)\n\n")
         for iStage=1:nStages
-            fprintf("%d\t\t%.2f\t\t\t---->\t%.4f\t\t\t---->\t%.2f\n\n", ...
-                    iStage, originalDeltaV(iStage), RocketData.propellantRatios(iStage), updatedDeltaV(iStage))
+            fprintf("%d\t\t%.2f\t\t\t---->\t%.3f\t\t\t---->\t%.2f\n\n", ...
+                    iStage, originalDeltaV(iStage), RocketData.propellantRatios(iStage)*100, updatedDeltaV(iStage))
         end
         fprintf("\t\t________________________________________________________________________\n\n")
         fprintf("\t\t%.2f / %.2f kg (%.3f %%)", ...

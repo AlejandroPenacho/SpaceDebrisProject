@@ -2,7 +2,7 @@
 % the information of the rocket works. And testing the integration.
 clc; clear
 
-RocketData = create_rocket("Epsilon.txt", 450, [-1, -1, 1050], true);
+RocketData = create_rocket("Epsilon.txt", 450, [-1, -1, 1185.37], true);
 
 
 
@@ -24,11 +24,11 @@ nValuesPropellant = 1;
 % gammaDispersion = 0.003;
 
 Parameter(1:nRockets) = struct("Rocket", RocketData, "Control", ControlStruct, "Constant", ConstantStruct);
-
+Objective = extract_objective("rocketObjective.txt", Parameter(1));
 
 % gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
 
-[bestGamma] = get_gamma_for_altitude(Parameter, 650000);
+[bestGamma] = get_gamma_for_altitude(Parameter, Objective.perigee-Objective.earthRadius);
 
 gammaArray = bestGamma;
 
@@ -37,7 +37,7 @@ propellantArray = 1;
 nRockets = nValuesGamma * nValuesPropellant;
 
 
-Objective = extract_objective("rocketObjective.txt", Parameter(1));
+
 
 for iRocket = 1:nRockets
     
@@ -61,3 +61,13 @@ end
 
 plot_results(Results, Objective, gammaArray, propellantArray)
 
+finalPerigee = Results.stateArray(end,4) + Objective.earthRadius;
+finalSpeed = Results.stateArray(end,1);
+requiredApogee = Objective.apogee;
+
+requiredFinalSpeed = sqrt(2*Objective.mu) * ...
+                     sqrt(1/finalPerigee - 1/(finalPerigee+requiredApogee));
+
+fprintf("Change deltaV by %.3f m/s\n", requiredFinalSpeed - finalSpeed);
+
+energy_analysis(Results, Objective)

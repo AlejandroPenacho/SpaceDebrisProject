@@ -1,8 +1,8 @@
 Perigee altitude:
-650000
+798800
 
 Apogee altitude:
-850000
+852400
 
 Error (%):
-1
+0.01

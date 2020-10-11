@@ -169,15 +169,17 @@ function [] = plot_rocket_map_perap(xName, xArray, yName, yArray, Results, Objec
         xIndex = mod(iRocket-1, nXValues)+1;
         yIndex = ceil(iRocket/nXValues);
         
-        orbitalRadius = rEarth + Results(iRocket).stateArray(end,4);
+        orbitalRadius = Objective.earthRadius + Results(iRocket).stateArray(end,4);
         orbitalSpeed = Results(iRocket).stateArray(end, 1);
         gamma = Results(iRocket).stateArray(end, 2);
         
-        energy = ((orbitalSpeed^2)/2 - mu/orbitalRadius);
+        gamma = 0;
+        
+        energy = ((orbitalSpeed^2)/2 - Objective.mu/orbitalRadius);
         h = orbitalSpeed * cos(gamma) * orbitalRadius;
         
-        a = -mu/(2*energy);
-        e = sqrt(1 - h^2/(mu * a));
+        a = -Objective.mu/(2*energy);
+        e = sqrt(1 - h^2/(Objective.mu * a));
         
         perMesh(xIndex, yIndex) = (a * (1-e) - Objective.earthRadius) / 1000;
                                   
