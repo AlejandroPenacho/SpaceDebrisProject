@@ -26,7 +26,7 @@ function [Results] = integrate_trajectory(Parameter)
             IC = Parameter.Control.initialConditions;
             tSpan = [0, 1000];
         else
-            IC = Results.stateArray(end, 1:8);
+            IC = Results.stateArray(end, 1:10);
             IC(5) = Rocket.Stage(iStage).initialMass;
             tSpan = Results.timeArray(end) + [0, 10000];
         end

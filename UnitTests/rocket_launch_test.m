@@ -28,9 +28,12 @@ Objective = extract_objective("rocketObjective.txt", Parameter(1));
 
 % gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
 
-[bestGamma] = get_gamma_for_altitude(Parameter, Objective.perigee-Objective.earthRadius);
+% [bestGamma] = get_gamma_for_altitude(Parameter, Objective.perigee-Objective.earthRadius);
+bestGamma = 1.368819004524887;
+
 
 gammaArray = bestGamma;
+
 
 propellantArray = 1;
 
@@ -51,6 +54,8 @@ for iRocket = 1:nRockets
                                                     RocketData.initialMass, ...
                                                     0, ...
                                                     0, ...
+                                                    0, ...
+                                                    0, ...
                                                     0];
 end
 
@@ -58,6 +63,16 @@ end
 for iRocket = 1:nRockets
     Results(iRocket) = integrate_trajectory(Parameter(iRocket));
 end
+
+
+for i=1:length(Results.timeArray)
+    if Results.stateArray(i,13) == 3 && ...
+       Results.stateArray(i,10) ~= Results.stateArray(i-1,10)
+            Results.stageChange = [Results.stageChange; i];
+            break
+    end
+end
+
 
 plot_results(Results, Objective, gammaArray, propellantArray)
 

@@ -141,6 +141,69 @@ function [] = plot_results(Results, Objective, gammaArray, propellantArray)
          [minApArray(1), maxApArray, minApArray(1)]/1000 - Objective.earthRadius/1000, "m")
 
     hold off
+    
+    
+    %% USEFUL PLOTS
+    
+    colorArray = {  [1, 0, 0], ...
+                    [0.8500, 0.3250, 0.0980], ...
+                    [0.4660, 0.6740, 0.1880], ...
+                    [0.9290, 0.6940, 0.1250]};
+                
+    figure
+    title("Rocket trajectory")
+    xlabel("X (km)")
+    ylabel("Altitude (km)")
+    hold on
+    for i=1:4
+        if i==1
+            initialIndex = 1;
+            finalIndex = Results.stageChange(1);
+        elseif i==4
+            initialIndex = Results.stageChange(3);
+            finalIndex = length(Results.timeArray);
+        else
+            initialIndex = Results.stageChange(i-1);
+            finalIndex = Results.stageChange(i);            
+        end
+        plot(Results.stateArray(initialIndex:finalIndex,3)/1000, ...
+             Results.stateArray(initialIndex:finalIndex,4)/1000, ...
+             "color", colorArray{i}, ...
+             "LineWidth", 5)
+    end
+    hold off
+    grid minor
+    legend("First stage", "Second stage", "No thrust", "Third stage", ...
+           "location", "southeast")
+    set(gca, "fontsize", 12)
+    
+    
+        figure
+    title("Velocity-altitude")
+    xlabel("Velocity (km/s)")
+    ylabel("Altitude (km)")
+    hold on
+    for i=1:4
+        if i==1
+            initialIndex = 1;
+            finalIndex = Results.stageChange(1);
+        elseif i==4
+            initialIndex = Results.stageChange(3);
+            finalIndex = length(Results.timeArray);
+        else
+            initialIndex = Results.stageChange(i-1);
+            finalIndex = Results.stageChange(i);            
+        end
+        plot(Results.stateArray(initialIndex:finalIndex,1)/1000, ...
+             Results.stateArray(initialIndex:finalIndex,4)/1000, ...
+             "color", colorArray{i}, ...
+             "LineWidth", 5)
+    end
+    hold off
+    grid minor
+    legend("First stage", "Second stage", "No thrust", "Third stage", ...
+           "location", "northwest")
+    set(gca, "fontsize", 12)
 end
 
 

@@ -78,6 +78,8 @@ function [derivativeStateArray] = get_state_derivative(t, state, Data)
     
     % The derivative of the mass is obtained with an external function
     derivativeMass = get_fuel_consumption(thrust, Parameter, iStage);
+    
+    energyIncrease = thrust * velocity;
 
     mechanicalPower = thrust * 9.81 * Parameter.Rocket.Stage(iStage).Isp;
 
@@ -88,7 +90,9 @@ function [derivativeStateArray] = get_state_derivative(t, state, Data)
                             derivativeMass; ...
                             propulsionAcceleration; ...
                             dragAcceleration; ...
-                            gravitationalAcceleration];
+                            gravitationalAcceleration;
+                            energyIncrease;
+                            mechanicalPower];
 
 end
 

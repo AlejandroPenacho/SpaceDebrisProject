@@ -26,9 +26,9 @@ function stageStateArray = extend_state_info(stageStateArray, Parameter, iStage)
 
     [nPoints,~] = size(stageStateArray);
 
-    stageStateArray(:,9) = stageStateArray(:,1) .* sin(stageStateArray(:,2));
+    stageStateArray(:,11) = stageStateArray(:,1) .* sin(stageStateArray(:,2));
 
-    stageStateArray(:,10) = stageStateArray(:,1) .* cos(stageStateArray(:,2));
-    stageStateArray(:,11) = ones(nPoints, 1) * iStage;
+    stageStateArray(:,12) = stageStateArray(:,1) .* cos(stageStateArray(:,2));
+    stageStateArray(:,13) = ones(nPoints, 1) * iStage;
 end
 
