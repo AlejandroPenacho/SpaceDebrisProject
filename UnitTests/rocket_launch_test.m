@@ -2,7 +2,7 @@
 % the information of the rocket works. And testing the integration.
 clc; clear
 
-RocketData = create_rocket("Epsilon.txt", 450, [-1, -1, 1185.37], true);
+RocketData = create_rocket("Epsilon.txt", 605.116, [-1, -1, 1490], true);
 
 
 

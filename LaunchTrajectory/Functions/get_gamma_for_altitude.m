@@ -35,7 +35,7 @@ function [optimalGamma] = get_gamma_for_altitude(Parameter, desiredAltitude)
                 close(currentFig);
                 
                 error = abs(1 - get_perigee(Parameter, optimalGamma)/desiredAltitude) * 100;
-                if error < 0.5
+                if error < 1
                     done = true;
                     fprintf("Success (error = %.2f %%)\n", error)
                 else
