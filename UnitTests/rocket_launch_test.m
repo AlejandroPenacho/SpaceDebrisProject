@@ -2,7 +2,7 @@
 % the information of the rocket works. And testing the integration.
 clc; clear
 
-RocketData = create_rocket("Epsilon.txt", 605.116, [-1, -1, 1490], true);
+RocketData = create_rocket("Epsilon.txt", 605.116, [3000, -1, 2225], true);
 
 
 
@@ -28,8 +28,8 @@ Objective = extract_objective("rocketObjective.txt", Parameter(1));
 
 % gammaArray = linspace(gammaMeanValue - gammaDispersion, gammaMeanValue + gammaDispersion, nValuesGamma);
 
-% [bestGamma] = get_gamma_for_altitude(Parameter, Objective.perigee-Objective.earthRadius);
-bestGamma = 1.368819004524887;
+[bestGamma] = get_gamma_for_altitude(Parameter, Objective.perigee-Objective.earthRadius);
+% bestGamma = 1.368819004524887;
 
 
 gammaArray = bestGamma;

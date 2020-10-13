@@ -68,7 +68,7 @@ function [outputArg1,outputArg2] = energy_analysis(Results, Objective)
     fprintf("Second stage:\t%.3f\tGJ\n", mechanicalEnergyArray(2)/10^9);
     fprintf("Third stage:\t%.3f\tGJ\n", mechanicalEnergyArray(3)/10^9);
     fprintf("------------------------\n")
-    fprintf("First stage:\t%.3f\tGJ\n", totalMechanicalEnergy/10^9);
+    fprintf("Total:\t\t%.3f\tGJ\n", totalMechanicalEnergy/10^9);
     
     
     %% Thermal energy
@@ -91,7 +91,7 @@ function [outputArg1,outputArg2] = energy_analysis(Results, Objective)
     fprintf("Second stage:\t%.3f\t\tGJ\n", thermalEnergyArray(2)/10^9);
     fprintf("Third stage:\t%.3f\t\tGJ\n", thermalEnergyArray(3)/10^9);
     fprintf("------------------------\n")
-    fprintf("First stage:\t%.3f\tGJ\n", (sum(thermalEnergyArray))/10^9);
+    fprintf("Total:\t\t%.3f\tGJ\n", (sum(thermalEnergyArray))/10^9);
     
     
     %% Delta V
@@ -110,8 +110,14 @@ function [outputArg1,outputArg2] = energy_analysis(Results, Objective)
     fprintf("Second stage:\t%.3f\tm/s\n", deltaVArray(2));
     fprintf("Third stage:\t%.3f\tm/s\n", deltaVArray(3));
     fprintf("------------------------\n")
-    fprintf("First stage:\t%.3f\tm/s\n", deltaVTotal);    
+    fprintf("Total:\t\t%.3f\tm/s\n", deltaVTotal);    
     
+    fprintf("Drag loss:\t%.3f\tm/s\n", Results.stateArray(end,7));
+    fprintf("Gravity loss:\t%.3f\tm/s\n", Results.stateArray(end,8));
+    fprintf("--------------------------\n")
+    fprintf("Final:\t\t%.3f\tm/s\n\n", deltaVTotal+...
+                                    Results.stateArray(end,7) + ...
+                                    Results.stateArray(end,8));
 end
 
 
