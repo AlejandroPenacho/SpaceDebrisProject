@@ -81,7 +81,7 @@ function [derivativeStateArray] = get_state_derivative(t, state, Data)
     
     energyIncrease = thrust * velocity;
 
-    mechanicalPower = thrust * 9.81 * Parameter.Rocket.Stage(iStage).Isp;
+    mechanicalPower = thrust * 9.81 * Parameter.Rocket.Stage(iStage).Isp/2;
 
     derivativeStateArray = [derivativeVelocity; ...
                             derivativeGamma; ...
