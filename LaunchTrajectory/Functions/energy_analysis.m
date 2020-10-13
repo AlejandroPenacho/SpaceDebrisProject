@@ -93,6 +93,25 @@ function [outputArg1,outputArg2] = energy_analysis(Results, Objective)
     fprintf("------------------------\n")
     fprintf("First stage:\t%.3f\tGJ\n", (sum(thermalEnergyArray))/10^9);
     
+    
+    %% Delta V
+    
+    deltaVArray = zeros(3,1);
+    
+    deltaVArray(1) = Results.stateArray(Results.stageChange(1),6);
+    deltaVArray(2) = Results.stateArray(Results.stageChange(2),6) - ...
+                          deltaVArray(1);
+    deltaVArray(3) = Results.stateArray(end,6) - ...
+                          Results.stateArray(Results.stageChange(3),6);
+    deltaVTotal = Results.stateArray(end,6);
+    
+    fprintf("\n\nDeltaV generation:\n\n")
+    fprintf("First stage:\t%.3f\tm/s\n", deltaVArray(1));
+    fprintf("Second stage:\t%.3f\tm/s\n", deltaVArray(2));
+    fprintf("Third stage:\t%.3f\tm/s\n", deltaVArray(3));
+    fprintf("------------------------\n")
+    fprintf("First stage:\t%.3f\tm/s\n", deltaVTotal);    
+    
 end
 
 
